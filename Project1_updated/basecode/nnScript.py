@@ -67,10 +67,10 @@ def preprocess():
     data_labels = list(zip(trainDatas, trainLabels))
 
     # Shuffle
-    np.random.shuffle(data_labels)
-    trainDatas, trainLabels = zip(*data_labels)
-    trainDatas = np.array(trainDatas)
-    trainLabels = np.array(trainLabels)
+    indices = np.arange(trainDatas.shape[0])
+    np.random.shuffle(indices)
+    trainDatas = trainDatas[indices]
+    trainLabels = trainLabels[indices]
 
     # Split training set
     train_data = trainDatas[:50000]
