@@ -24,8 +24,8 @@ def initializeWeights(n_in, n_out):
 def sigmoid(z):
     """# Notice that z can be a scalar, a vector or a matrix
     # return the sigmoid of input z"""
-
-    return  # your code here
+    # based 3.2.1 (2) formula
+    return  1/(1+np.exp(-z))
 
 
 def preprocess():
@@ -147,18 +147,46 @@ def nnObjFunction(params, *args):
     obj_val = 0
 
     # Your code here
-    #
-    #
-    #
-    #
-    #
 
+    # Feedforward 3.2.2
+    # (1) Compute linear combination for the hidden layer
+    a1 = np.dot(training_data,w1.T)
+    # (2) Apply sigmoid activation to get hidden layer output
+    z1 = sigmoid(a1)
+    # hidden layer bias
+    z1_bias = np.hstack((np.ones((z1.shape[0], 1)), z1))
+    #（3）Compute linear combination for the output layer
+    b1 = np.dot(a1, w2.t)
+    # (4) Apply sigmoid activation to get final output probabilities
+    o1 = sigmoid(b1)
 
+    # Backpropogation 3.2.3
+    gamma = 0.01
 
+    # input layer error
+    error = -(train_label * np.log(o1) + (1-train_label)*np.log(1-o1))
+    
+    # average input error
+    obj_val = np.sum(error) / train_data.shape[0]
+
+    # hidden error
+    delta_output = o1 - train_label  
+    delta_hidden = np.dot(delta_output, w2[:, 1:]) * sigmoid(z1) * (1 - sigmoid(z1))
+
+    # output layer to hidden layer gradient w2
+    grad_w2 = np.dot(delta_output.T, np.concatenate([z1, np.ones((z1.shape[0], 1))], axis=1)) / train_data.shape[0]
+
+    # input layer to hidden layer gradient w1
+    grad_w1 = np.dot(delta_hidden.T, np.concatenate([train_data, np.ones((train_data.shape[0], 1))], axis=1)) / train_data.shape[0]
+
+    # update weight using gradient descent 
+    w1 = w1 - gamma * grad_w1
+    w2 = w2 - gamma * grad_w2
+
+    obj_grad = np.concatenate((grad_w1.flatten(), grad_w2.flatten()), axis=0)
     # Make sure you reshape the gradient matrices to a 1D array. for instance if your gradient matrices are grad_w1 and grad_w2
     # you would use code similar to the one below to create a flat array
     # obj_grad = np.concatenate((grad_w1.flatten(), grad_w2.flatten()),0)
-    obj_grad = np.array([])
 
     return (obj_val, obj_grad)
 
