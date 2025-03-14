@@ -192,6 +192,7 @@ def optimize(iterations, train_dataloader, model, cost, optimizer):
     # Print the time-usage.
     print("Time usage: " + str(timedelta(seconds=int(round(time_dif)))))
 
+
 learning_rate = 1e-4
 train_batch_size = 64
 test_batch_size = 256

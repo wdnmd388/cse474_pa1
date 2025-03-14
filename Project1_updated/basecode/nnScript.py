@@ -54,9 +54,15 @@ def preprocess():
 
     # Split the training sets into two sets of 50000 randomly sampled training examples and 10000 validation examples. 
     # Your code here.
+<<<<<<< HEAD
 
     imagePixels = 28*28
 
+=======
+  
+    imagePixels = 28*28
+
+>>>>>>> yu
     # Combine all training data (train0 to train9) and labels
     trainDatas = np.vstack([mat[f'train{i}'] for i in range(10)])
     
@@ -67,10 +73,17 @@ def preprocess():
     data_labels = list(zip(trainDatas, trainLabels))
 
     # Shuffle
+<<<<<<< HEAD
     np.random.shuffle(data_labels)
     trainDatas, trainLabels = zip(*data_labels)
     trainDatas = np.array(trainDatas)
     trainLabels = np.array(trainLabels)
+=======
+    indices = np.arange(trainDatas.shape[0])
+    np.random.shuffle(indices)
+    trainDatas = trainDatas[indices]
+    trainLabels = trainLabels[indices]
+>>>>>>> yu
 
     # Split training set
     train_data = trainDatas[:50000]
