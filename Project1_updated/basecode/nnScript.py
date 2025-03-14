@@ -54,9 +54,34 @@ def preprocess():
 
     # Split the training sets into two sets of 50000 randomly sampled training examples and 10000 validation examples. 
     # Your code here.
-    
+  
+    imagePixels = 28*28
 
-    # Feature selection
+    # Combine all training data (train0 to train9) and labels
+    trainDatas = np.vstack([mat[f'train{i}'] for i in range(10)])
+    
+    # forming training labels (1D)
+    trainLabels = np.hstack([np.full(mat[f'train{i}'].shape[0], i) for i in range(10)]) 
+
+    # Combine 
+    data_labels = list(zip(trainDatas, trainLabels))
+
+    # Shuffle
+    np.random.shuffle(data_labels)
+    trainDatas, trainLabels = zip(*data_labels)
+    trainDatas = np.array(trainDatas)
+    trainLabels = np.array(trainLabels)
+
+    # Split training set
+    train_data = trainDatas[:50000]
+    train_label = trainLabels[:50000]
+
+    validation_data = trainDatas[50000:]
+    validation_label = trainLabels[50000:]
+
+    # Combine all testing data (test0 to test9) and labels
+    test_data = np.vstack([mat[f'test{i}'] for i in range(10)]) 
+    test_label = np.hstack([np.full(mat[f'test{i}'].shape[0], i) for i in range(10)]) 
     # Your code here.
 
     print('preprocess done')
