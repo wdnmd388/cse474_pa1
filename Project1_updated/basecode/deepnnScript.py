@@ -20,19 +20,53 @@ def create_multilayer_perceptron():
             super().__init__()
 
             # Network Parameters
-            n_hidden_1 = 256  # 1st layer number of features
-            n_hidden_2 = 256  # 2nd layer number of features
+            n_hidden_1 = 500  # 1st layer number of features
+            n_hidden_2 = 570  # 2nd layer number of features
             n_input = 2376  # data input
             n_classes = 2
+
+            n_hidden_3 = 100
+
+            n_hidden_4 = 70
+
+            n_hidden_5 = 200
+
+            #n_hidden_6 = 400
+
+            #n_hidden_7 = 500
+
+
 
             # Initialize network layers
             self.layer_1 = nn.Linear(n_input, n_hidden_1)
             self.layer_2 = nn.Linear(n_hidden_1, n_hidden_2)
-            self.out_layer = nn.Linear(n_hidden_2, n_classes)
+            self.layer_3 = nn.Linear(n_hidden_2, n_hidden_3)
+            self.layer_4 = nn.Linear(n_hidden_3, n_hidden_4)
+            self.layer_5 = nn.Linear(n_hidden_4, n_hidden_5)
+            #self.layer_6 = nn.Linear(n_hidden_5, n_hidden_6)
+            #self.layer_7 = nn.Linear(n_hidden_6, n_hidden_7)
+
+            self.b_lay_1 = nn.BatchNorm1d(n_hidden_1)
+            self.b_lay_2 = nn.BatchNorm1d(n_hidden_2)
+            self.b_lay_3 = nn.BatchNorm1d(n_hidden_3)
+            self.b_lay_4 = nn.BatchNorm1d(n_hidden_4)
+            self.b_lay_5 = nn.BatchNorm1d(n_hidden_5)
+
+
+            self.out_layer = nn.Linear(n_hidden_5, n_classes)
 
         def forward(self, x):
-            x = F.relu(self.layer_1(x))
-            x = F.relu(self.layer_2(x))
+            x = F.relu(self.b_lay_1(self.layer_1(x)))
+            x = F.relu(self.b_lay_2(self.layer_2(x)))
+            x = F.relu(self.b_lay_3(self.layer_3(x)))
+            x = F.relu(self.b_lay_4(self.layer_4(x)))
+            x = F.relu(self.b_lay_5(self.layer_5(x)))
+            #x = F.relu(self.layer_2(x))
+            #x = F.relu(self.layer_3(x))
+            #x = F.relu(self.layer_4(x))
+            #x = F.relu(self.layer_5(x))
+            #x = F.relu(self.layer_6(x))
+            #x = F.relu(self.layer_7(x))
             x = self.out_layer(x)
             return x
 
